@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
+import SeekerUser from "../models/SeekerUser.js";
 
+// Register Services
 const register = async (data) => {
+  // console.log("User",data);
   const isUser = await User.findOne({ email: data.email });
   if (isUser) throw new Error("Email already registered.....");
 
@@ -24,6 +27,7 @@ const register = async (data) => {
   };
 };
 
+// Login Services
 const login = async (data) => {
   const isUser = await User.findOne({ email: data.email });
   if (!isUser) throw new Error("Email or Password doesn't match.....");
@@ -40,8 +44,16 @@ const login = async (data) => {
   };
 };
 
+const profile = async (userId, updates) => {
+  return await SeekerUser.findOneAndUpdate(
+    { user: userId },
+    { $set: updates },
+    { new: true, upsert: true } // create if not exists
+  ).populate('user', 'name email roles');
+};
 
 export default {
-    register,
-    login,
-}
+  register,
+  login,
+  profile,
+};

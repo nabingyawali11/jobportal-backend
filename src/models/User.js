@@ -3,28 +3,27 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
+    trim: true,
   },
-
-  address: String,
-
   email: {
     type: String,
-    require: true,
+    required: true,
     lowercase: true,
+    unique: true,
+    trim: true,
   },
-
   password: {
     type: String,
-    require: true,
+    required: true,
   },
-roles:{
-    type:[String],
-    default:["Recruter"],
-},
+  roles: {
+    type: [String],
+    default: ["Seeker"],   // Recruiter,Admin
+  },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 
